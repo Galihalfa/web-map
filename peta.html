@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Web Gis Peta Geologi DIY</title>
+    </head>
+    <body>
+       <div class="container">
+					<header class="major special">
+						<h2>Peta Geologi DIY</h2>
+						<p>Contoh Web Gis Peta Geologi DIY menggunakan leaflet dan qgis2web</p>
+					</header>
+        </div>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/Struktur_Geologi_1.js"></script>
+        <script src="data/Peta_Geologi_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-8.300836920342933,109.84955397414562],[-7.705608195134493,110.99129508701184]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        var overlay_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            opacity: 1.0
+        });
+        overlay_OSMStandard_0.addTo(map);
+        map.addLayer(overlay_OSMStandard_0);
+        function pop_Struktur_Geologi_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? Autolinker.link(String(feature.properties['OBJECTID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">nama</th>\
+                        <td>' + (feature.properties['nama'] !== null ? Autolinker.link(String(feature.properties['nama'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Struktur_Geologi_1_0(feature) {
+            switch(String(feature.properties['nama'])) {
+                case 'Antiklinal':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                case 'Sesar':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                case 'Sesar Geser':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(122,245,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                case 'Sinklinal':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(215,255,35,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(236,151,91,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+            }
+                    break;
+            }
+        }
+        function style_Struktur_Geologi_1_1(feature) {
+            switch(String(feature.properties['nama'])) {
+                case 'Antiklinal':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(22,219,193,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                case 'Sesar':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(240,66,66,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                case 'Sesar Geser':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(85,170,0,1.0)',
+                dashArray: '1,5',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                case 'Sinklinal':
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+                opacity: 1,
+                color: 'rgba(85,170,0,1.0)',
+                dashArray: '1,5',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Struktur_Geologi_1',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Struktur_Geologi_1');
+        map.getPane('pane_Struktur_Geologi_1').style.zIndex = 401;
+        map.getPane('pane_Struktur_Geologi_1').style['mix-blend-mode'] = 'normal';
+        var layer_Struktur_Geologi_1 = new L.geoJson.multiStyle(json_Struktur_Geologi_1, {
+            attribution: '',
+            pane: 'pane_Struktur_Geologi_1',
+            onEachFeature: pop_Struktur_Geologi_1,
+            styles: [style_Struktur_Geologi_1_0,style_Struktur_Geologi_1_1,]
+        });
+        bounds_group.addLayer(layer_Struktur_Geologi_1);
+        map.addLayer(layer_Struktur_Geologi_1);
+        function pop_Peta_Geologi_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">SYMBOLS</th>\
+                        <td>' + (feature.properties['SYMBOLS'] !== null ? Autolinker.link(String(feature.properties['SYMBOLS'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NAME_BI</th>\
+                        <td>' + (feature.properties['NAME_BI'] !== null ? Autolinker.link(String(feature.properties['NAME_BI'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CLASS_LITH</th>\
+                        <td>' + (feature.properties['CLASS_LITH'] !== null ? Autolinker.link(String(feature.properties['CLASS_LITH'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Peta_Geologi_2_0(feature) {
+            switch(String(feature.properties['NAME_BI'])) {
+                case 'Aluvial':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,255,238,1.0)',
+            }
+                    break;
+                case 'Andesit':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,65,104,0.9921568627450981)',
+            }
+                    break;
+                case 'Batuan Gunungapi Tak Terpisahkan':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,216,202,1.0)',
+            }
+                    break;
+                case 'Diorit':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(195,0,8,1.0)',
+            }
+                    break;
+                case 'Endapan Gunungapi Merapi Tua':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(218,90,77,1.0)',
+            }
+                    break;
+                case 'Endapan Gunungapi Muda Merapi':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,217,201,1.0)',
+            }
+                    break;
+                case 'Endapan Longsoran (Ladu) dari Awan Panas':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,111,81,1.0)',
+            }
+                    break;
+                case 'Formasi Jonggrangan':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(132,190,140,1.0)',
+            }
+                    break;
+                case 'Formasi Kebobutak':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,189,137,1.0)',
+            }
+                    break;
+                case 'Formasi Kepek':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(133,201,222,1.0)',
+            }
+                    break;
+                case 'Formasi Mandalika':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(203,64,45,1.0)',
+            }
+                    break;
+                case 'Formasi Nampol':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,238,214,1.0)',
+            }
+                    break;
+                case 'Formasi Nanggulan':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,251,201,1.0)',
+            }
+                    break;
+                case 'Formasi Oyo':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,202,1.0)',
+            }
+                    break;
+                case 'Formasi Sambipitu':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(250,243,101,1.0)',
+            }
+                    break;
+                case 'Formasi Semilir':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,213,122,1.0)',
+            }
+                    break;
+                case 'Formasi Sentolo':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,252,222,1.0)',
+            }
+                    break;
+                case 'Formasi Wonosari':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,240,255,1.0)',
+            }
+                    break;
+                case 'Formasi Wungkal':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,199,125,1.0)',
+            }
+                    break;
+                case 'Formasi Wuni':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,215,97,1.0)',
+            }
+                    break;
+                case 'Koluvial':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,195,1.0)',
+            }
+                    break;
+                case 'Kubah Lava dan Leleran':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(248,125,145,1.0)',
+            }
+                    break;
+                case 'Nglanggran Formation':
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,165,123,1.0)',
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Peta_Geologi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,206,46,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Peta_Geologi_2');
+        map.getPane('pane_Peta_Geologi_2').style.zIndex = 402;
+        map.getPane('pane_Peta_Geologi_2').style['mix-blend-mode'] = 'normal';
+        var layer_Peta_Geologi_2 = new L.geoJson(json_Peta_Geologi_2, {
+            attribution: '',
+            pane: 'pane_Peta_Geologi_2',
+            onEachFeature: pop_Peta_Geologi_2,
+            style: style_Peta_Geologi_2_0,
+        });
+        bounds_group.addLayer(layer_Peta_Geologi_2);
+        map.addLayer(layer_Peta_Geologi_2);
+        var img_ASTER_3 = 'data/ASTER_3.png';
+        var img_bounds_ASTER_3 = [[-8.029900243795302,110.24263318210426],[-7.959460302342027,110.3366671201316]];
+        var overlay_ASTER_3 = new L.imageOverlay(img_ASTER_3, img_bounds_ASTER_3);
+        bounds_group.addLayer(overlay_ASTER_3);
+        map.addLayer(overlay_ASTER_3);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{"ASTER": overlay_ASTER_3,'Peta_Geologi<br /><table><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_Aluvial0.png" /></td><td>Aluvial</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_Andesit1.png" /></td><td>Andesit</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_BatuanGunungapiTakTerpisahkan2.png" /></td><td>Batuan Gunungapi Tak Terpisahkan</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_Diorit3.png" /></td><td>Diorit</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_EndapanGunungapiMerapiTua4.png" /></td><td>Endapan Gunungapi Merapi Tua</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_EndapanGunungapiMudaMerapi5.png" /></td><td>Endapan Gunungapi Muda Merapi</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_EndapanLongsoranLadudariAwanPanas6.png" /></td><td>Endapan Longsoran (Ladu) dari Awan Panas</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiJonggrangan7.png" /></td><td>Formasi Jonggrangan</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiKebobutak8.png" /></td><td>Formasi Kebobutak</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiKepek9.png" /></td><td>Formasi Kepek</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiMandalika10.png" /></td><td>Formasi Mandalika</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiNampol11.png" /></td><td>Formasi Nampol</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiNanggulan12.png" /></td><td>Formasi Nanggulan</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiOyo13.png" /></td><td>Formasi Oyo</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiSambipitu14.png" /></td><td>Formasi Sambipitu</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiSemilir15.png" /></td><td>Formasi Semilir</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiSentolo16.png" /></td><td>Formasi Sentolo</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiWonosari17.png" /></td><td>Formasi Wonosari</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiWungkal18.png" /></td><td>Formasi Wungkal</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_FormasiWuni19.png" /></td><td>Formasi Wuni</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_Koluvial20.png" /></td><td>Koluvial</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_KubahLavadanLeleran21.png" /></td><td>Kubah Lava dan Leleran</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_NglanggranFormation22.png" /></td><td>Nglanggran Formation</td></tr><tr><td style="text-align: center;"><img src="legend/Peta_Geologi_2_23.png" /></td><td></td></tr></table>': layer_Peta_Geologi_2,'Struktur_Geologi<br /><table><tr><td style="text-align: center;"><img src="legend/Struktur_Geologi_1_Antiklinal0.png" /></td><td>Antiklinal</td></tr><tr><td style="text-align: center;"><img src="legend/Struktur_Geologi_1_Sesar1.png" /></td><td>Sesar</td></tr><tr><td style="text-align: center;"><img src="legend/Struktur_Geologi_1_SesarGeser2.png" /></td><td>Sesar Geser</td></tr><tr><td style="text-align: center;"><img src="legend/Struktur_Geologi_1_Sinklinal3.png" /></td><td>Sinklinal</td></tr><tr><td style="text-align: center;"><img src="legend/Struktur_Geologi_1_4.png" /></td><td></td></tr></table>': layer_Struktur_Geologi_1,"OSM Standard": overlay_OSMStandard_0,}).addTo(map);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
